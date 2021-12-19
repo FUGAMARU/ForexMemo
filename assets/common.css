@@ -1,0 +1,23 @@
+@charset "utf-8";
+
+/*全コンポーネント共通のCSSを書いていく*/
+.text-primary {
+	color: #363636;
+}
+
+/*Font-Faces*/
+@font-face {
+	font-family: "Stem-Bold";
+	src: url("~/assets/fonts/Stem-Bold.ttf");
+}
+.font-sb {
+	font-family: Stem-Bold;
+}
+
+@font-face {
+	font-family: "Kazesawa-SemiBold";
+	src: url("~/assets/fonts/Kazesawa-SemiBold.ttf");
+}
+.font-ksb {
+	font-family: Kazesawa-SemiBold;
+}
