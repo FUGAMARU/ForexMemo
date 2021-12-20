@@ -1,8 +1,8 @@
 <template>
 <div>
 	<div class="currency-icons-container mr-1">
-		<img src="~/assets/currencies/USD.svg" alt="USD" class="currency-icon-1">
-		<img src="~/assets/currencies/JPY.svg" alt="JPY" class="currency-icon-2">
+		<img :src="tradingCurrency" alt="TradingCurrency" class="currency-icon-1">
+		<img :src="settlementCurrency" alt="SettlementCurrency" class="currency-icon-2">
 	</div>
 </div>
 </template>
@@ -11,7 +11,15 @@
 import Vue from "vue"
 
 export default Vue.extend({
-	
+	props: ["symbol"],
+	computed:{
+		tradingCurrency() {
+			return require("~/assets/currencies/" + this.symbol.split("/")[0] + ".svg")
+		},
+		settlementCurrency() {
+			return require("~/assets/currencies/" + this.symbol.split("/")[1] + ".svg")
+		}
+	}
 })
 </script>
 
