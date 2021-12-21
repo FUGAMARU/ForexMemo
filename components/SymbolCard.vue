@@ -4,7 +4,7 @@
 			<SymbolIcon :symbol="symbol"/>
 			<div class="text-2xl font-sb text-primary">{{symbol}}</div>
 		</div>
-		<Tag />
+		<Tag :symbol="symbol"/>
 	</div>
 </template>
 
