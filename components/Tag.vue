@@ -20,8 +20,12 @@ export default Vue.extend({
 	data() {
 		return{
 			status: ["絶対ロング", "ロングかも", "中立", "ショートかも", "絶対ショート"],
-			statusCode: <number|null>1 //実際の初期値はnull
+			statusCode: <number|null>null
 		}
+	},
+	mounted() {
+		const localStorage_symbols = JSON.parse(localStorage.getItem("symbols") || "{}")
+		this.statusCode = localStorage_symbols[this.symbol]["statusCode"]
 	}
 })
 </script>

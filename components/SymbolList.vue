@@ -11,9 +11,9 @@ export default Vue.extend({
 	components: {
 		SymbolCard: () => import("~/components/SymbolCard.vue")
 	},
+	props: ["symbols"],
 	data() {
 		return {
-			symbols: ["USD/JPY", "EUR/USD", "GBP/USD", "AUD/USD", "NZD/USD", "USD/CAD", "USD/CHF", "EUR/JPY", "GBP/JPY", "AUD/JPY", "NZD/JPY", "CAD/JPY", "CHF/JPY", "CAD/CHF", "EUR/CAD", "EUR/CHF", "EUR/GBP", "GBP/CAD", "GBP/CHF", "AUD/CAD", "AUD/CHF", "AUD/NZD", "EUR/AUD", "EUR/NZD", "GBP/AUD", "GBP/NZD", "NZD/CAD", "NZD/CHF"],
 			currentCurrency: <number | null>null,
 			prevCurrency: <string>""
 		}

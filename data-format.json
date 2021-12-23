@@ -1,21 +1,21 @@
 {
     "$comment": "LocalStorage利用に関するデーターフォーマット案 - 通貨ペアの並べ替えも考慮してIDを付与し、その中に通貨ペア情報を入れている。",
-    "0": {
-        "USDJPY": {
-            "statusCode": 3,
-            "memo": "ドル円に関する分析メモ"
-        }
-    },
-    "1": {
-        "EURUSD": {
-            "statusCode": 2,
-            "memo": "ユロルに関する分析メモ"
-        }
-    },
-    "2": {
-        "EURAUD": {
-            "statusCode": 5,
-            "memo": "ユロオジに関する分析メモ"
-        }
-    }
+	"theme": "light",
+	"symbols": {
+		"USD/JPY": {
+			"order": 1,
+			"statusCode": 3,
+			"memo": "ドル円に関する分析メモ"
+		},
+		"EUR/USD": {
+			"order": 2,
+			"statusCode": 2,
+			"memo": "ユロルに関する分析メモ"
+		},
+		"GBP/AUD": {
+			"order": 3,
+			"statusCode": 5,
+			"memo": "ポンオジに関する分析メモ"
+		}
+	}
 }
