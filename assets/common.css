@@ -21,3 +21,9 @@
 .font-ksb {
 	font-family: Kazesawa-SemiBold;
 }
+
+.list-animation {
+	animation: fadeInRight;
+	animation-duration: 1500ms;
+	animation-fill-mode: forwards;
+}

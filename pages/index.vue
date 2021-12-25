@@ -1,13 +1,14 @@
 <template>
 	<div>
-		<Header />
-		<SymbolList :symbols="symbols"/>
+		<Header @toggleMenu="toggleMenu"/>
+		<SymbolList :symbols="symbols" :showSymbolCard="showSymbolCard" id="symbol-list" style="display: none;"/>
 	</div>
 </template>
 
 <script lang="ts">
 import Vue from "vue"
 import { component } from "vue/types/umd"
+import { up, down } from "slide-element"
 
 export default Vue.extend({
   name: "IndexPage",
@@ -17,7 +18,23 @@ export default Vue.extend({
   },
   data() {
 	  return {
-			symbols: ["USD/JPY", "EUR/USD", "GBP/USD", "AUD/USD", "NZD/USD", "USD/CAD", "USD/CHF", "EUR/JPY", "GBP/JPY", "AUD/JPY", "NZD/JPY", "CAD/JPY", "CHF/JPY", "CAD/CHF", "EUR/CAD", "EUR/CHF", "EUR/GBP", "GBP/CAD", "GBP/CHF", "AUD/CAD", "AUD/CHF", "AUD/NZD", "EUR/AUD", "EUR/NZD", "GBP/AUD", "GBP/NZD", "NZD/CAD", "NZD/CHF"]
+			symbols: ["USD/JPY", "EUR/USD", "GBP/USD", "AUD/USD", "NZD/USD", "USD/CAD", "USD/CHF", "EUR/JPY", "GBP/JPY", "AUD/JPY", "NZD/JPY", "CAD/JPY", "CHF/JPY", "CAD/CHF", "EUR/CAD", "EUR/CHF", "EUR/GBP", "GBP/CAD", "GBP/CHF", "AUD/CAD", "AUD/CHF", "AUD/NZD", "EUR/AUD", "EUR/NZD", "GBP/AUD", "GBP/NZD", "NZD/CAD", "NZD/CHF"],
+			showSymbolCard: false
+	  }
+  },
+  methods: {
+	toggleMenu(sw: boolean) {
+		if(sw){
+			//リストを開くとき
+			down(document.getElementById("symbol-list")!, {duration: 1000})
+			this.showSymbolCard = true
+		}else{
+			//リストを閉じるとき
+			up(document.getElementById("symbol-list")!, {duration: 500})
+			setTimeout(() => {
+				this.showSymbolCard = false
+			}, 500)
+		  }
 	  }
   },
   mounted() {
