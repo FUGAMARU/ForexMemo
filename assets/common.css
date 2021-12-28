@@ -5,6 +5,15 @@
 	color: #363636;
 }
 
+.current-symbol-container {
+	display: flex;
+	overflow-x: auto;
+}
+
+.current-symbol-element {
+	flex: 0 0 auto;
+}
+
 /*Font-Faces*/
 @font-face {
 	font-family: "Stem-Bold";

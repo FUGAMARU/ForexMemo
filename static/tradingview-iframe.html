@@ -1,0 +1,24 @@
+<html>
+	<!-- TradingView Widget BEGIN -->
+	<div class="tradingview-widget-container">
+		<div id="tradingview_6f639"></div>
+		<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+		<script type="text/javascript">
+			const symbol = location.search.split("=")[1];
+			new TradingView.widget({
+				"autosize": true,
+				"symbol": `FX:${symbol}`,
+				"interval": "240",
+				"timezone": "Asia/Tokyo",
+				"theme": "light",
+				"style": "9",
+				"locale": "ja",
+				"toolbar_bg": "#f1f3f6",
+				"enable_publishing": false,
+				"allow_symbol_change": true,
+				"container_id": "tradingview_6f639"
+			});
+		</script>
+	</div>
+	<!-- TradingView Widget END -->
+</html>

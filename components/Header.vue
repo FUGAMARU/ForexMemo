@@ -1,5 +1,5 @@
 <template>
-	<div class="relative mx-auto px-5 py-3 shadow-lg flex justify-between items-center">
+	<div class="mx-auto px-5 py-3 shadow-lg flex justify-between items-center">
 		<img src="~/assets/logo.svg" alt="logo" class="h-6">
 		<img v-if="isOpened" src="~/assets/arrow-up.svg" alt="" class="h-7" @click="toggleMenu" />
 		<img v-if="!(isOpened)" src="~/assets/arrow-down.svg" alt="" class="h-7" @click="toggleMenu" />
