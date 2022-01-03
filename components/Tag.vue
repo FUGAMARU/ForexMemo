@@ -24,8 +24,26 @@ export default Vue.extend({
 		}
 	},
 	mounted() {
-		const localStorage_symbols = JSON.parse(localStorage.getItem("symbols") || "{}")
-		this.statusCode = localStorage_symbols[this.symbol]["statusCode"]
+		//@ts-ignore
+		this.statusCode = this.$store.getters.symbols[this.symbol]["statusCode"]
+	},
+	computed: {
+		storeStatusCode() {
+			//@ts-ignore
+			return this.$store.getters.symbols
+		}
+	},
+	watch: {
+		storeStatusCode(obj) {
+			//@ts-ignore
+			if(obj[this.symbol]["statusCode"] !== undefined){
+				//@ts-ignore
+				this.statusCode = obj[this.symbol]["statusCode"]
+			}else{
+				//@ts-ignore
+				this.statusCode = obj[this.symbol]
+			}
+		}
 	}
 })
 </script>

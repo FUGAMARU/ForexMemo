@@ -61,6 +61,8 @@ export default Vue.extend({
 		})
 		localStorage.setItem("symbols",JSON.stringify(localStorage_initialization))
 	}
+
+	this.$store.commit("init", localStorage.getItem("symbols"))
   }
 })
 </script>
