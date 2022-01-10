@@ -1,14 +1,18 @@
 <template>
 	<div>
-		<Header @toggleMenu="toggleMenu"/>
-		<SymbolList :symbols="symbols" :showSymbolCard="showSymbolCard" class="hidden absolute z-50 w-full" id="symbol-list"/>
-		<CurrentSymbol :symbol="currentSymbol"/>
-		<!--チャートとメモが左右表示のブレイクポイントからはチャートにも下陰を付けたい(スマホ等ではチャートとメモが連結表示なので必要ない)-->
-		<div class="md:shadow-lg" style="height: 20rem;">
-			<!--ティッカーシンボルはスラッシュ無しで渡してあげる(=>index.vueでスラッシュを消す処理をしてから渡す)-->
-			<iframe src="/tradingview-iframe.html?symbol=EURUSD" height="100%" width="100%" frameborder="0"></iframe>
+		<Header @toggleMenu="toggleMenu" :isOpened="isOpened"/>
+		<SymbolList @toggleMenu="toggleMenu" @changeSymbol="changeSymbol" :symbols="symbols" :showSymbolCard="showSymbolCard" class="hidden absolute z-50 w-full" id="symbol-list"/>
+		<div v-if="currentSymbol !== ''">
+			<CurrentSymbol :symbol="currentSymbol" :key="currentSymbol"/>
+			<!--チャートとメモが左右表示のブレイクポイントからはチャートにも下陰を付けたい(スマホ等ではチャートとメモが連結表示なので必要ない)-->
+			<div class="md:shadow-lg" style="height: 20rem;">
+				<iframe :src="TVSrc" height="100%" width="100%" frameborder="0"></iframe>
+			</div>
+			<Memo :symbol="currentSymbol"/>
 		</div>
-		<Memo :symbol="currentSymbol"/>
+		<div v-else>
+			<p class="text-center m-3 text-gray-500">シンボルを選択してください</p>
+		</div>
 	</div>
 </template>
 
@@ -29,12 +33,14 @@ export default Vue.extend({
 	  return {
 			symbols: ["USD/JPY", "EUR/USD", "GBP/USD", "AUD/USD", "NZD/USD", "USD/CAD", "USD/CHF", "EUR/JPY", "GBP/JPY", "AUD/JPY", "NZD/JPY", "CAD/JPY", "CHF/JPY", "CAD/CHF", "EUR/CAD", "EUR/CHF", "EUR/GBP", "GBP/CAD", "GBP/CHF", "AUD/CAD", "AUD/CHF", "AUD/NZD", "EUR/AUD", "EUR/NZD", "GBP/AUD", "GBP/NZD", "NZD/CAD", "NZD/CHF"],
 			showSymbolCard: false,
-			currentSymbol: "EUR/USD"
+			currentSymbol: "",
+			isOpened: false
 	  }
   },
   methods: {
-	toggleMenu(sw: boolean) {
-		if(sw){
+	toggleMenu() {
+		this.isOpened = !(this.isOpened)
+		if(this.isOpened){
 			//リストを開くとき
 			down(document.getElementById("symbol-list")!, {duration: 1000})
 			this.showSymbolCard = true
@@ -45,7 +51,10 @@ export default Vue.extend({
 				this.showSymbolCard = false
 			}, 500)
 		  }
-	  }
+	},
+	changeSymbol(symbol: string) {
+		this.currentSymbol = symbol
+	}
   },
   mounted() {
 	interface localStorageTypes {
@@ -54,7 +63,7 @@ export default Vue.extend({
 
 	if(localStorage.getItem("theme") === null) {
 		//LocalStorageにテンプレートデーターを作成
-		localStorage.setItem("theme","light")
+		localStorage.setItem("theme", "light")
 		let localStorage_initialization: localStorageTypes = {}
 		this.symbols.forEach((symbol, index) => {
 			localStorage_initialization[symbol] = {"order": index + 1, "statusCode": null, "memo": ""}
@@ -63,6 +72,12 @@ export default Vue.extend({
 	}
 
 	this.$store.commit("init", localStorage.getItem("symbols"))
+  },
+  computed: {
+	  TVSrc() {
+		  //@ts-ignore
+		  return "/tradingview-iframe.html?symbol=" + this.currentSymbol.replace("/", "");
+	  }
   }
 })
 </script>

@@ -10,21 +10,10 @@
 import Vue from "vue"
 
 export default Vue.extend({
-	data() {
-		return{
-			isOpened: false
-		}
-	},
+	props: ["isOpened"],
 	methods: {
 		toggleMenu() {
-			this.isOpened = !(this.isOpened)
-			if(this.isOpened){
-				//リストを開く
-				this.$emit("toggleMenu", true)
-			}else{
-				//リストを閉じる
-				this.$emit("toggleMenu", false)
-			}
+			this.$emit("toggleMenu")
 		}
 	}
 })

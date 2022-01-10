@@ -16,7 +16,7 @@ export default Vue.extend({
 	data() {
 		return {
 			currentCurrency: <number | null>null,
-			prevCurrency: <string>""
+			prevCurrency: ""
 		}
 	},
 	methods: {
@@ -26,9 +26,11 @@ export default Vue.extend({
 				//チャート・メモを表示や切り替えしたい時
 				console.log(`Opened: ${this.symbols[index]}`)
 				this.prevCurrency = this.symbols[index]
+				this.$emit("changeSymbol", this.symbols[index])
 			}else{
 				//チャート・メモの表示を消したい時
 				console.log(`Closed: ${this.symbols[index]}`)
+				this.$emit("changeSymbol", "")
 			}
 
 			if(this.currentCurrency === index){
@@ -36,6 +38,7 @@ export default Vue.extend({
 			}else{
 				this.currentCurrency = index
 			}
+			this.$emit("toggleMenu")
 		}
 	}
 })
