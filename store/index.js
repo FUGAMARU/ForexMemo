@@ -12,7 +12,7 @@ export const mutations = {
 		state.symbols = JSON.parse(json)
 	},
 	update(state, obj) {
-		state.symbols[obj["symbol"]] = obj["statusCode"]
+		state.symbols[obj["symbol"]]["statusCode"] = obj["statusCode"]
 		const copy = {...state.symbols}
 		state.symbols = {...copy}
 	}

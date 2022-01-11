@@ -34,11 +34,15 @@ export default Vue.extend({
 	},
 	methods: {
 		setTag(statusCode:number) {
-			this.statusCode = statusCode
+			if(this.statusCode === statusCode){
+				this.statusCode = null
+			}else{
+				this.statusCode = statusCode
+			}
 			//@ts-ignore
-			this.localStorage_symbols[this.symbol]["statusCode"] = statusCode
+			this.localStorage_symbols[this.symbol]["statusCode"] = this.statusCode
 			localStorage.setItem("symbols", JSON.stringify(this.localStorage_symbols))
-			this.$store.commit("update", {"symbol": this.symbol, "statusCode": statusCode})
+			this.$store.commit("update", {"symbol": this.symbol, "statusCode": this.statusCode})
 		}
 	}
 })
