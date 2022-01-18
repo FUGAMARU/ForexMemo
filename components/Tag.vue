@@ -13,37 +13,36 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue"
+//import Vue from "vue"
+import { defineComponent, ref, computed, onMounted, useStore, watch } from "@nuxtjs/composition-api"
 
-export default Vue.extend({
-	props: ["symbol"],
-	data() {
-		return{
-			status: ["絶対ロング", "ロングかも", "中立", "ショートかも", "絶対ショート"],
-			statusCode: <number|null>null
+export default defineComponent({
+	props: {
+		symbol: {
+			type: String,
+			required: true
 		}
 	},
-	mounted() {
-		//@ts-ignore
-		this.statusCode = this.$store.getters.symbols[this.symbol]["statusCode"]
-	},
-	computed: {
-		storeStatusCode() {
-			//@ts-ignore
-			return this.$store.getters.symbols
-		}
-	},
-	watch: {
-		storeStatusCode(obj) {
-			//@ts-ignore
-			if(obj[this.symbol]["statusCode"] !== undefined){
-				//@ts-ignore
-				this.statusCode = obj[this.symbol]["statusCode"]
+	setup(props) {
+		const status = ["絶対ロング", "ロングかも", "中立", "ショートかも", "絶対ショート"] //statusCodeに対応する日本語のタグ表示
+		const statusCode = ref<null | number>(null) //選択されているタグの状態
+
+		const store = useStore()
+		const storeStatusCode = computed(() => store.getters.symbols)
+	
+		onMounted(() => {
+			statusCode.value = store.getters.symbols[props.symbol]["statusCode"]
+		})
+
+		watch(storeStatusCode, (obj) => {
+			if(obj[props.symbol]["statusCode"] !== undefined){
+				statusCode.value = obj[props.symbol]["statusCode"]
 			}else{
-				//@ts-ignore
-				this.statusCode = obj[this.symbol]
+				statusCode.value = obj[props.symbol]
 			}
-		}
+		})
+
+		return { status, statusCode}
 	}
 })
 </script>

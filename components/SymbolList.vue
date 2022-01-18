@@ -1,45 +1,54 @@
 <template>
 	<div class="grid-cols-1 bg-gray-200 py-3">
-		<SymbolCard v-for="(val, index) in symbols" :key="index" :index="index" :showSymbolCard="showSymbolCard" :symbol="val" @click.native="setHighlight(index)" :class="{'bg-white': currentCurrency === index, 'shadow-md': currentCurrency === index}" style="opacity: 0"/>
+		<SymbolCard v-for="(val, index) in symbols" :key="index" :index="index" :isListOpened="isListOpened" :symbol="val" @click.native="setHighlight(index)" :class="{'bg-white': currentCurrency === index, 'shadow-md': currentCurrency === index}" style="opacity: 0"/>
 	</div>
 </template>
 
 <script lang="ts">
-import Vue from "vue"
+//import Vue from "vue"
+import { defineComponent, ref } from "@nuxtjs/composition-api"
 import "animate.css"
 
-export default Vue.extend({
+export default defineComponent({
 	components: {
 		SymbolCard: () => import("~/components/SymbolCard.vue")
 	},
-	props: ["symbols", "showSymbolCard"],
-	data() {
-		return {
-			currentCurrency: <number | null>null,
-			prevCurrency: ""
+	props: {
+		symbols: {
+			type: Array as () => string[],
+			required: true
+		},
+		isListOpened: {
+			type: Boolean,
+			required: true
 		}
 	},
-	methods: {
-		setHighlight(index: number) {
-			console.log(`Clicked: ${this.symbols[index]}`)
-			if(this.symbols[index] !== this.prevCurrency){
+	setup(props, context) {
+		const currentCurrency = ref<null | number>(null) //現在表示中のシンボル
+		const prevCurrency = ref("") //それまで表示していたシンボル
+
+		const setHighlight = (index: number) => {
+			//console.log(`Clicked: ${props.symbols[index]}`)
+			if(props.symbols[index] !== prevCurrency.value){
 				//チャート・メモを表示や切り替えしたい時
-				console.log(`Opened: ${this.symbols[index]}`)
-				this.prevCurrency = this.symbols[index]
-				this.$emit("changeSymbol", this.symbols[index])
+				//console.log(`Opened: ${props.symbols[index]}`)
+				prevCurrency.value = props.symbols[index]
+				context.emit("changeSymbol", props.symbols[index])
 			}else{
 				//チャート・メモの表示を消したい時
-				console.log(`Closed: ${this.symbols[index]}`)
-				this.$emit("changeSymbol", "")
+				//console.log(`Closed: ${props.symbols[index]}`)
+				context.emit("changeSymbol", "")
 			}
 
-			if(this.currentCurrency === index){
-				this.currentCurrency = null
+			if(currentCurrency.value === index){
+				currentCurrency.value = null
 			}else{
-				this.currentCurrency = index
+				currentCurrency.value = index
 			}
-			this.$emit("toggleMenu")
+			context.emit("toggleList")
 		}
+
+		return { currentCurrency, prevCurrency, setHighlight}
 	}
 })
 </script>

@@ -1,7 +1,7 @@
 <template>
 	<div>
-		<Header @toggleMenu="toggleMenu" :isOpened="isOpened"/>
-		<SymbolList @toggleMenu="toggleMenu" @changeSymbol="changeSymbol" :symbols="symbols" :showSymbolCard="showSymbolCard" class="hidden absolute z-50 w-full" id="symbol-list"/>
+		<Header @toggleList="toggleList" :isListOpened="isListOpened"/>
+		<SymbolList @toggleList="toggleList" @changeSymbol="changeSymbol" :symbols="symbols" :isListOpened="isListOpened" class="hidden absolute z-50 w-full" id="symbol-list"/>
 		<div v-if="currentSymbol !== ''">
 			<CurrentSymbol :symbol="currentSymbol" :key="currentSymbol"/>
 			<!--チャートとメモが左右表示のブレイクポイントからはチャートにも下陰を付けたい(スマホ等ではチャートとメモが連結表示なので必要ない)-->
@@ -17,67 +17,65 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue"
-import { component } from "vue/types/umd"
+//import Vue from "vue"
+//import { component } from "vue/types/umd"
+import { defineComponent, ref, computed, onMounted, useStore } from "@nuxtjs/composition-api"
 import { up, down } from "slide-element"
 
-export default Vue.extend({
-  name: "IndexPage",
-  components: {
-	  Header: () => import("~/components/Header.vue"),
-	  SymbolList: () => import("~/components/SymbolList.vue"),
-	  CurrentSymbol: () => import("~/components/CurrentSymbol.vue"),
-	  Memo: () => import("~/components/Memo.vue")
-  },
-  data() {
-	  return {
-			symbols: ["USD/JPY", "EUR/USD", "GBP/USD", "AUD/USD", "NZD/USD", "USD/CAD", "USD/CHF", "EUR/JPY", "GBP/JPY", "AUD/JPY", "NZD/JPY", "CAD/JPY", "CHF/JPY", "CAD/CHF", "EUR/CAD", "EUR/CHF", "EUR/GBP", "GBP/CAD", "GBP/CHF", "AUD/CAD", "AUD/CHF", "AUD/NZD", "EUR/AUD", "EUR/NZD", "GBP/AUD", "GBP/NZD", "NZD/CAD", "NZD/CHF"],
-			showSymbolCard: false,
-			currentSymbol: "",
-			isOpened: false
-	  }
-  },
-  methods: {
-	toggleMenu() {
-		this.isOpened = !(this.isOpened)
-		if(this.isOpened){
-			//リストを開くとき
-			down(document.getElementById("symbol-list")!, {duration: 1000})
-			this.showSymbolCard = true
-		}else{
-			//リストを閉じるとき
-			up(document.getElementById("symbol-list")!, {duration: 500})
-			setTimeout(() => {
-				this.showSymbolCard = false
-			}, 500)
-		  }
+export default defineComponent({
+	components: {
+		Header: () => import("~/components/Header.vue"),
+	  	SymbolList: () => import("~/components/SymbolList.vue"),
+		CurrentSymbol: () => import("~/components/CurrentSymbol.vue"),
+	  	Memo: () => import("~/components/Memo.vue")
 	},
-	changeSymbol(symbol: string) {
-		this.currentSymbol = symbol
-	}
-  },
-  mounted() {
-	interface localStorageTypes {
-		[key: string]: any
-	}
+	setup() {
+		const symbols = ["USD/JPY", "EUR/USD", "GBP/USD", "AUD/USD", "NZD/USD", "USD/CAD", "USD/CHF", "EUR/JPY", "GBP/JPY", "AUD/JPY", "NZD/JPY", "CAD/JPY", "CHF/JPY", "CAD/CHF", "EUR/CAD", "EUR/CHF", "EUR/GBP", "GBP/CAD", "GBP/CHF", "AUD/CAD", "AUD/CHF", "AUD/NZD", "EUR/AUD", "EUR/NZD", "GBP/AUD", "GBP/NZD", "NZD/CAD", "NZD/CHF"] //対応シンボル
+		const isListOpened = ref(false) //シンボルリストが開いているか閉じているか
+		const currentSymbol = ref("") //表示中のシンボル
 
-	if(localStorage.getItem("theme") === null) {
-		//LocalStorageにテンプレートデーターを作成
-		localStorage.setItem("theme", "light")
-		let localStorage_initialization: localStorageTypes = {}
-		this.symbols.forEach((symbol, index) => {
-			localStorage_initialization[symbol] = {"order": index + 1, "statusCode": null, "memo": ""}
+		//TradingView用iFrameのソースURL
+		const TVSrc = computed(() => "/tradingview-iframe.html?symbol=" + currentSymbol.value.replace("/", ""))
+
+		onMounted(() => {
+			interface localStorageTypes {
+				[key: string]: any
+			}
+
+			if(localStorage.getItem("theme") === null) {
+				//LocalStorageにテンプレートデーターを作成
+				localStorage.setItem("theme", "light")
+
+				let localStorage_initialization: localStorageTypes = {}
+				symbols.forEach((symbol: string, index: number) => {
+					localStorage_initialization[symbol] = {"order": index + 1, "statusCode": null, "memo": ""}
+				})
+
+				localStorage.setItem("symbols",JSON.stringify(localStorage_initialization))
+			}
+
+			useStore().commit("init", localStorage.getItem("symbols"))
 		})
-		localStorage.setItem("symbols",JSON.stringify(localStorage_initialization))
-	}
 
-	this.$store.commit("init", localStorage.getItem("symbols"))
-  },
-  computed: {
-	  TVSrc() {
-		  //@ts-ignore
-		  return "/tradingview-iframe.html?symbol=" + this.currentSymbol.replace("/", "");
-	  }
-  }
+		const toggleList = () => { 
+			if(isListOpened.value){
+				//リストを閉じるとき
+				up(document.getElementById("symbol-list")!, {duration: 500})
+				setTimeout(() => {
+					isListOpened.value = false
+				}, 500)
+			}else{
+				//リストを開くとき
+				down(document.getElementById("symbol-list")!, {duration: 1000})
+				isListOpened.value = true
+			}
+		}
+
+		const changeSymbol = (symbol: string) => {
+			currentSymbol.value = symbol
+		}
+	
+		return { symbols, isListOpened, currentSymbol, TVSrc, toggleList, changeSymbol }
+	}
 })
 </script>

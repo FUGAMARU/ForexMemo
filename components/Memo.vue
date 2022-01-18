@@ -5,10 +5,16 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue"
+//import Vue from "vue"
+import { defineComponent } from "@nuxtjs/composition-api"
 
-export default Vue.extend({
-	props: ["symbol"]
+export default defineComponent({
+	props: {
+    	symbol: {
+      		type: String,
+      		required: true
+   		}
+  	}
 })
 </script>
 

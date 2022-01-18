@@ -14,36 +14,44 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue"
+//import Vue from "vue"
+import { defineComponent, ref, onMounted, useStore } from "@nuxtjs/composition-api"
 
-export default Vue.extend({
+export default defineComponent({
 	components:{
 		SymbolIcon: () => import("~/components/SymbolIcon.vue"),
 		Tag: () => import("~/components/Tag.vue")
 	},
-	props: ["symbol"],
-	data() {
-		return{
-			statusCode: <number|null>null,
-			localStorage_symbols: []
-		}
-	},
-	mounted() {
-		this.localStorage_symbols = JSON.parse(localStorage.getItem("symbols") || "{}")
-		this.statusCode = this.localStorage_symbols[this.symbol]["statusCode"]
-	},
-	methods: {
-		setTag(statusCode:number) {
-			if(this.statusCode === statusCode){
-				this.statusCode = null
+	props: {
+    	symbol: {
+      		type: String,
+      		required: true
+   		}
+  	},
+	setup(props) {
+		const statusCode = ref<null | number>(null) //選択されているタグの状態
+		const localStorage_symbols = ref([]) //LocalStorageのSymbolsプロパティーのオブジェクトをコピーしたもの
+
+		onMounted(() => {
+			localStorage_symbols.value = JSON.parse(localStorage.getItem("symbols") || "{}")
+			//@ts-ignore
+			statusCode.value = localStorage_symbols.value[props.symbol]["statusCode"]
+		})
+
+		const store = useStore()
+		const setTag = (receivedStatusCode: number) => {
+			if(statusCode.value === receivedStatusCode){
+				statusCode.value = null
 			}else{
-				this.statusCode = statusCode
+				statusCode.value = receivedStatusCode
 			}
 			//@ts-ignore
-			this.localStorage_symbols[this.symbol]["statusCode"] = this.statusCode
-			localStorage.setItem("symbols", JSON.stringify(this.localStorage_symbols))
-			this.$store.commit("update", {"symbol": this.symbol, "statusCode": this.statusCode})
+			localStorage_symbols.value[props.symbol]["statusCode"] = statusCode.value
+			localStorage.setItem("symbols", JSON.stringify(localStorage_symbols.value))
+			store.commit("update", {"symbol": props.symbol, "statusCode": statusCode.value})
 		}
+
+		return { statusCode, setTag }
 	}
 })
 </script>

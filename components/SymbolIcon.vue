@@ -8,17 +8,21 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue"
+//import Vue from "vue"
+import { defineComponent, computed } from "@nuxtjs/composition-api"
 
-export default Vue.extend({
-	props: ["symbol"],
-	computed:{
-		tradingCurrency() {
-			return require("~/assets/currencies/" + this.symbol.split("/")[0] + ".svg")
-		},
-		settlementCurrency() {
-			return require("~/assets/currencies/" + this.symbol.split("/")[1] + ".svg")
+export default defineComponent({
+	props: {
+		symbol: {
+			type: String,
+			required: true
 		}
+	},
+	setup(props) {
+		const tradingCurrency = computed(() => require("~/assets/currencies/" + props.symbol.split("/")[0] + ".svg")) //取引通貨
+		const settlementCurrency = computed(() => require("~/assets/currencies/" + props.symbol.split("/")[1] + ".svg")) //決済通貨
+		
+		return { tradingCurrency, settlementCurrency}
 	}
 })
 </script>

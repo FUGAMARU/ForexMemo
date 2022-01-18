@@ -9,32 +9,46 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue"
+//import Vue from "vue"
+import { defineComponent, ref, toRefs, watch } from '@nuxtjs/composition-api'
 
-export default Vue.extend({
+export default defineComponent({
 	components:{
 		SymbolIcon: () => import("~/components/SymbolIcon.vue"),
 		Tag: () => import("~/components/Tag.vue")
 	},
-	props: ["symbol", "index", "showSymbolCard"],
-	data() {
-		return{
-			toggleClass: false
+	props: {
+    	symbol: {
+      		type: String,
+      		required: true
+   		},
+		index: {
+			type: Number,
+			required: true
+		},
+		isListOpened: {
+			type: Boolean,
+			required: true
 		}
-	},
-	watch: {
-		showSymbolCard(sw) {
+  	},
+	setup(props) {
+		const toggleClass = ref(false) //SymbolCardにフェードインアニメーションを付加するためのスイッチ(アニメーションの都合上"props.isListOpened"で代用不可！)
+		const { isListOpened } = toRefs(props)
+
+		watch(isListOpened, (sw) => {
 			if(sw){
 				setTimeout(() => {
-					this.toggleClass = true;
+					toggleClass.value = true;
 					//console.log(`${this.index}番フェードイン発火`)
-				}, this.index * 50 + 150)
+				}, props.index * 50 + 150)
 			}else{
 				setTimeout(() => {
-					this.toggleClass = false
+					toggleClass.value = false
 				}, 500)
 			}
-		}
+		})
+
+		return { toggleClass }
 	}
 })
 </script>
