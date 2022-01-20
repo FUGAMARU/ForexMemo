@@ -11,10 +11,17 @@ export const mutations = {
 	init(state, json) {
 		state.symbols = JSON.parse(json)
 	},
-	update(state, obj) {
+	updateStatusCode(state, obj) {
 		state.symbols[obj["symbol"]]["statusCode"] = obj["statusCode"]
 		const copy = {...state.symbols}
 		state.symbols = {...copy}
+		localStorage.setItem("symbols", JSON.stringify(state.symbols))
+	},
+	updateMemo(state, obj) {
+		state.symbols[obj["symbol"]]["memo"] = obj["memo"]
+		const copy = {...state.symbols}
+		state.symbols = {...copy}
+		localStorage.setItem("symbols", JSON.stringify(state.symbols))
 	}
 }
 

@@ -30,25 +30,19 @@ export default defineComponent({
   	},
 	setup(props) {
 		const statusCode = ref<null | number>(null) //選択されているタグの状態
-		const localStorage_symbols = ref([]) //LocalStorageのSymbolsプロパティーのオブジェクトをコピーしたもの
-
-		onMounted(() => {
-			localStorage_symbols.value = JSON.parse(localStorage.getItem("symbols") || "{}")
-			//@ts-ignore
-			statusCode.value = localStorage_symbols.value[props.symbol]["statusCode"]
-		})
 
 		const store = useStore()
+		onMounted(() => {
+			statusCode.value = store.getters.symbols[props.symbol]["statusCode"]
+		})
+
 		const setTag = (receivedStatusCode: number) => {
 			if(statusCode.value === receivedStatusCode){
 				statusCode.value = null
 			}else{
 				statusCode.value = receivedStatusCode
 			}
-			//@ts-ignore
-			localStorage_symbols.value[props.symbol]["statusCode"] = statusCode.value
-			localStorage.setItem("symbols", JSON.stringify(localStorage_symbols.value))
-			store.commit("update", {"symbol": props.symbol, "statusCode": statusCode.value})
+			store.commit("updateStatusCode", {"symbol": props.symbol, "statusCode": statusCode.value})
 		}
 
 		return { statusCode, setTag }

@@ -8,7 +8,7 @@
 			<div class="md:shadow-lg" style="height: 20rem;">
 				<iframe :src="TVSrc" height="100%" width="100%" frameborder="0"></iframe>
 			</div>
-			<Memo :symbol="currentSymbol"/>
+			<Memo :symbol="currentSymbol" :key="currentSymbol + '-memo'"/>
 		</div>
 		<div v-else>
 			<p class="text-center m-3 text-gray-500">シンボルを選択してください</p>
