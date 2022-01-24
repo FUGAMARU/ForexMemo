@@ -1,17 +1,21 @@
 <template>
 	<div>
 		<Header @toggleList="toggleList" :isListOpened="isListOpened"/>
-		<SymbolList @toggleList="toggleList" @changeSymbol="changeSymbol" :symbols="symbols" :isListOpened="isListOpened" class="hidden absolute z-50 w-full" id="symbol-list"/>
-		<div v-if="currentSymbol !== ''">
-			<CurrentSymbol :symbol="currentSymbol" :key="currentSymbol"/>
-			<!--チャートとメモが左右表示のブレイクポイントからはチャートにも下陰を付けたい(スマホ等ではチャートとメモが連結表示なので必要ない)-->
-			<div class="md:shadow-lg" style="height: 20rem;">
-				<iframe :src="TVSrc" height="100%" width="100%" frameborder="0"></iframe>
+		<div class="container mx-auto md:flex md:direction-row">
+			<SymbolList @toggleList="toggleList" @changeSymbol="changeSymbol" :symbols="symbols" :isListOpened="isListOpened" class="hidden md:block absolute md:static z-50 w-full md:w-auto" id="symbol-list"/>
+			<div style="flex-grow: 1">
+				<div v-if="currentSymbol !== ''" style="flex-grow: 1">
+					<CurrentSymbol :symbol="currentSymbol" :key="currentSymbol"/>
+					<!--チャートとメモが左右表示のブレイクポイントからはチャートにも下陰を付けたい(スマホ等ではチャートとメモが連結表示なので必要ない)-->
+					<div class="h-96 md:h-120 lg:h-96">
+						<iframe :src="TVSrc" height="100%" width="100%" frameborder="0"></iframe>
+					</div>
+					<Memo :symbol="currentSymbol" :key="currentSymbol + '-memo'"/>
+				</div>
+				<div v-else>
+					<p class="text-center ml-auto mr-auto text-gray-500">シンボルを選択してください</p>
+				</div>
 			</div>
-			<Memo :symbol="currentSymbol" :key="currentSymbol + '-memo'"/>
-		</div>
-		<div v-else>
-			<p class="text-center m-3 text-gray-500">シンボルを選択してください</p>
 		</div>
 	</div>
 </template>
@@ -57,7 +61,7 @@ export default defineComponent({
 			useStore().commit("init", localStorage.getItem("symbols"))
 		})
 
-		const toggleList = () => { 
+		const toggleList = () => {
 			if(isListOpened.value){
 				//リストを閉じるとき
 				up(document.getElementById("symbol-list")!, {duration: 500})

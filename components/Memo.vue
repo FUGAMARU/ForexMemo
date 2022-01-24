@@ -1,6 +1,6 @@
 <template>
 	<div class="px-2 shadow-lg rounded">
-		<textarea class="w-full memo bg-gray-100" :placeholder="`${symbol}に関するメモを入力…`" v-model="memo"></textarea>
+		<textarea class="w-full memo bg-gray-100" rows="5" :placeholder="`${symbol}に関するメモを入力…`" v-model="memo"></textarea>
 		<p id="saved" class="hidden text-center text-green-500">保存しました！</p>
 	</div>
 </template>
@@ -28,7 +28,7 @@ export default defineComponent({
 		const store = useStore()
 		watch(memo, (val: string, prevVal: string) => {
 			if(prevVal !== ""){
-				if(timer){clearTimeout(timer)}
+				if(timer) clearTimeout(timer)
 				timer = window.setTimeout(() => {				
 					store.commit("updateMemo", {"symbol": props.symbol, "memo": val})
 

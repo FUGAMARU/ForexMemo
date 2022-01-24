@@ -24,7 +24,7 @@ export default defineComponent({
 		}
 	},
 	setup(props) {
-		const status = ["絶対ロング", "ロングかも", "中立", "ショートかも", "絶対ショート"] //statusCodeに対応する日本語のタグ表示
+		const status = ["DL", "ML", "N", "MS", "DS"] //statusCodeに対応する日本語のタグ表示
 		const statusCode = ref<null | number>(null) //選択されているタグの状態
 
 		const store = useStore()

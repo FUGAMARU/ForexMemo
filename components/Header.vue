@@ -1,8 +1,10 @@
 <template>
-	<div class="mx-auto px-5 py-3 shadow-lg flex justify-between items-center">
-		<img src="~/assets/logo.svg" alt="logo" class="h-6">
-		<img v-if="isListOpened" src="~/assets/arrow-up.svg" alt="" class="h-7" @click="toggleList" />
-		<img v-if="!(isListOpened)" src="~/assets/arrow-down.svg" alt="" class="h-7" @click="toggleList" />
+	<div class="shadow-lg w-full">
+		<div class="px-5 py-3 flex justify-between items-center md:container md:mx-auto">
+			<img src="~/assets/logo.svg" alt="logo" class="h-6">
+			<img v-if="isListOpened" src="~/assets/arrow-up.svg" alt="" class="h-7 md:hidden" @click="toggleList" />
+			<img v-if="!(isListOpened)" src="~/assets/arrow-down.svg" alt="" class="h-7 md:hidden" @click="toggleList" />
+		</div>
 	</div>
 </template>
 
