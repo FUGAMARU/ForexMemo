@@ -2,22 +2,6 @@
 
 /*全コンポーネント共通のCSSを書いていく*/
 
-/* Small (sm) */
-@media (min-width: 640px) { /* ... */ }
-
-/* Medium (md) */
-@media (min-width: 768px) { 
-	.current-symbol {
-		
-	}	
-}
-
-/* Large (lg) */
-@media (min-width: 1024px) { /* ... */ }
-
-/* Extra Large (xl) */
-@media (min-width: 1280px) { /* ... */ }
-
 .text-primary {
 	color: #363636;
 }
@@ -34,18 +18,10 @@
 /*Font-Faces*/
 @font-face {
 	font-family: "Stem-Bold";
-	src: url("~/assets/fonts/Stem-Bold.ttf");
+	src: url("@/assets/fonts/Stem-Bold.ttf");
 }
 .font-sb {
 	font-family: Stem-Bold;
-}
-
-@font-face {
-	font-family: "Kazesawa-SemiBold";
-	src: url("~/assets/fonts/Kazesawa-SemiBold.ttf");
-}
-.font-ksb {
-	font-family: Kazesawa-SemiBold;
 }
 
 .list-animation {

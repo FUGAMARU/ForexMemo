@@ -39,7 +39,7 @@ export default defineComponent({
 		const currentSymbol = ref("") //表示中のシンボル
 
 		//TradingView用iFrameのソースURL
-		const TVSrc = computed(() => "/tradingview-iframe.html?symbol=" + currentSymbol.value.replace("/", ""))
+		const TVSrc = computed(() => "./tradingview-iframe.html?symbol=" + currentSymbol.value.replace("/", ""))
 
 		onMounted(() => {
 			interface localStorageTypes {

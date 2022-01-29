@@ -1,5 +1,5 @@
 <template>
-	<div class="rounded font-ksb text-white px-2 py-1"
+	<div class="rounded font-bold text-white px-2 py-1"
 		:class="{
 			'bg-green-500': statusCode === 0,
 			'bg-green-300' : statusCode === 1,

@@ -1,6 +1,6 @@
 <template>
 	<div class="bg-gray-200 py-3">
-		<SymbolCard v-for="(val, index) in symbols" :key="index" :index="index" :isListOpened="isListOpened" :symbol="val" @click.native="setHighlight(index)" :class="{'bg-white': currentCurrency === index, 'shadow-md': currentCurrency === index}" style="opacity: 0"/>
+		<SymbolCard v-for="(val, index) in symbols" :key="index" :index="index" :isListOpened="isListOpened" :symbol="val" @click.native="setHighlight(index)" :class="{'bg-white': currentCurrency === index, 'shadow-md': currentCurrency === index}" style="opacity: 0;cursor: pointer;"/>
 	</div>
 </template>
 
